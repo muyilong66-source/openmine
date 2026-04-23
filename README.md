@@ -1,0 +1,2 @@
+# openmine
+open and mine
