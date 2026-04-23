@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>配套监测设备 · 总览</title>
+    <style>
+        :root { --text:#1a1a2e; --muted:#5c5c6f; --primary:#0d6efd; --bg:#f8fafc; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; color:var(--text); line-height:1.65; background:var(--bg); }
+        .topbar { background:#fff; border-bottom:1px solid #e2e8f0; padding:16px clamp(16px,4vw,48px); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+        .topbar a { color:var(--primary); font-weight:600; text-decoration:none; }
+        .wrap { max-width:720px; margin:0 auto; padding:40px 20px 72px; }
+        h1 { margin:0 0 12px; font-size:1.65rem; }
+        .lead { color:var(--muted); margin:0 0 32px; font-size:.95rem; }
+        .card-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px; }
+        .card-list a { display:block; padding:18px 20px; background:#fff; border:1px solid #e2e8f0; border-radius:14px; color:var(--text); text-decoration:none; font-weight:600; box-shadow:0 4px 20px rgba(15,23,42,.06); transition:border-color .2s, box-shadow .2s; }
+        .card-list a:hover { border-color:rgba(13,110,253,.4); box-shadow:0 8px 28px rgba(13,110,253,.12); color:var(--primary); }
+        .card-list span { display:block; font-weight:400; font-size:.85rem; color:var(--muted); margin-top:6px; }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <a href="../index.html">← 返回网站首页</a>
+        <a href="../index.html#product-cards">本页产品卡片</a>
+    </header>
+    <main class="wrap">
+        <h1>配套监测设备</h1>
+        <p class="lead">本栏目侧重<strong>硬件参数、功能分类及系统组成</strong>：从形变、深部、环境水文、采集传输到视频监控与辅助设施，支撑方案落地与集成选型。</p>
+        <ul class="card-list">
+            <li><a href="deformation.html">形变监测类<span>GNSS、测量机器人、裂缝计与伸缩仪</span></a></li>
+            <li><a href="deep-sensing.html">深部感知类<span>测斜仪、光纤光栅、微震监测</span></a></li>
+            <li><a href="env-hydro.html">环境与水文类<span>渗压计、水位计、雨量与气象站</span></a></li>
+            <li><a href="daq-comm.html">数据采集与传输<span>遥测终端、低功耗网关、太阳能供电</span></a></li>
+            <li><a href="video-alarm.html">视频监控与辅助<span>高清球机/枪机、声光报警</span></a></li>
+        </ul>
+    </main>
+</body>
+</html>

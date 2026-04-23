@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术知识库总览</title>
+    <style>
+        :root { --text:#1a1a2e; --muted:#5c5c6f; --primary:#0d6efd; --bg:#f8fafc; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; color:var(--text); line-height:1.65; background:var(--bg); }
+        .topbar { background:#fff; border-bottom:1px solid #e2e8f0; padding:16px clamp(16px,4vw,48px); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+        .topbar a { color:var(--primary); font-weight:600; text-decoration:none; }
+        .topbar a:hover { text-decoration:underline; }
+        .wrap { max-width:720px; margin:0 auto; padding:40px 20px 72px; }
+        h1 { margin:0 0 12px; font-size:1.65rem; }
+        .lead { color:var(--muted); margin:0 0 32px; font-size:.95rem; }
+        .card-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px; }
+        .card-list a { display:block; padding:18px 20px; background:#fff; border:1px solid #e2e8f0; border-radius:14px; color:var(--text); text-decoration:none; font-weight:600; box-shadow:0 4px 20px rgba(15,23,42,.06); transition: border-color .2s, box-shadow .2s; }
+        .card-list a:hover { border-color:rgba(13,110,253,.4); box-shadow:0 8px 28px rgba(13,110,253,.12); color:var(--primary); }
+        .card-list span { display:block; font-weight:400; font-size:.85rem; color:var(--muted); margin-top:6px; }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <a href="../index.html">← 返回网站首页</a>
+    </header>
+    <main class="wrap">
+        <h1>技术知识库</h1>
+        <p class="lead">以下为露天矿山边坡监测相关主题独立页面，便于收藏与分享。内容结构与首页知识库板块一致。</p>
+        <ul class="card-list">
+            <li><a href="openpit.html">露天矿<span>行业背景、开采与全生命周期、典型场景</span></a></li>
+            <li><a href="slope.html">边坡介绍<span>几何要素、破坏模式、稳定性指标</span></a></li>
+            <li><a href="landslide.html">滑坡原因<span>内外因、前兆识别</span></a></li>
+            <li><a href="standards.html">安全规范<span>国家标准、监测规范、应急管理</span></a></li>
+            <li><a href="supervision.html">监管要求<span>双重预防、在线监测、政策动态</span></a></li>
+        </ul>
+    </main>
+</body>
+</html>

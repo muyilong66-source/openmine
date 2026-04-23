@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全方位解决方案 · 总览</title>
+    <style>
+        :root { --text:#1a1a2e; --muted:#5c5c6f; --primary:#0d6efd; --bg:#f8fafc; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; color:var(--text); line-height:1.65; background:var(--bg); }
+        .topbar { background:#fff; border-bottom:1px solid #e2e8f0; padding:16px clamp(16px,4vw,48px); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+        .topbar a { color:var(--primary); font-weight:600; text-decoration:none; }
+        .topbar a:hover { text-decoration:underline; }
+        .wrap { max-width:720px; margin:0 auto; padding:40px 20px 72px; }
+        h1 { margin:0 0 12px; font-size:1.65rem; }
+        .lead { color:var(--muted); margin:0 0 32px; font-size:.95rem; }
+        .card-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px; }
+        .card-list a { display:block; padding:18px 20px; background:#fff; border:1px solid #e2e8f0; border-radius:14px; color:var(--text); text-decoration:none; font-weight:600; box-shadow:0 4px 20px rgba(15,23,42,.06); transition:border-color .2s, box-shadow .2s; }
+        .card-list a:hover { border-color:rgba(13,110,253,.4); box-shadow:0 8px 28px rgba(13,110,253,.12); color:var(--primary); }
+        .card-list span { display:block; font-weight:400; font-size:.85rem; color:var(--muted); margin-top:6px; }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <a href="../index.html">← 返回网站首页</a>
+    </header>
+    <main class="wrap">
+        <h1>全方位解决方案</h1>
+        <p class="lead">本栏目侧重<strong>宏观架构、技术路线与应用场景</strong>：从空天地深一体化感知、矿山全生命周期、智慧数据平台到典型场景定制，形成可落地的监测与预警体系顶层设计。</p>
+        <ul class="card-list">
+            <li><a href="integrated-monitoring.html">空天地深一体化监测体系<span>InSAR 普查、GNSS 形变、深部综合监测、无人机应急</span></a></li>
+            <li><a href="lifecycle.html">矿山全生命周期管理<span>建设期评估、运营期预警、闭坑期生态修复监测</span></a></li>
+            <li><a href="smart-platform.html">智慧矿山数据平台<span>三维可视化、多源融合、分级预警发布</span></a></li>
+            <li><a href="typical-scenarios.html">典型场景定制方案<span>高陡岩质边坡、松散排土场、尾矿库在线监测</span></a></li>
+        </ul>
+    </main>
+</body>
+</html>

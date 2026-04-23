@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>边坡介绍 · 技术知识库</title>
+    <style>
+        :root { --text:#1a1a2e; --muted:#5c5c6f; --primary:#0d6efd; --bg:#f8fafc; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; color:var(--text); line-height:1.65; background:var(--bg); }
+        .topbar { background:#fff; border-bottom:1px solid #e2e8f0; padding:16px clamp(16px,4vw,48px); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+        .topbar a { color:var(--primary); font-weight:600; text-decoration:none; }
+        .topbar a:hover { text-decoration:underline; }
+        .wrap { max-width:800px; margin:0 auto; padding:40px 20px 72px; }
+        h1 { margin:0 0 8px; font-size:1.5rem; }
+        .loc { color:var(--muted); margin:0 0 28px; font-size:.92rem; }
+        .loc strong { color:var(--primary); }
+        h2 { font-size:1.08rem; margin:28px 0 12px; padding-left:12px; border-left:4px solid var(--primary); }
+        p { margin:0 0 10px; font-size:.92rem; }
+        ul { padding-left:1.2rem; color:var(--muted); font-size:.9rem; }
+        li { margin-bottom:8px; }
+        li strong { color:var(--text); }
+        .sub { font-weight:700; margin:18px 0 8px; font-size:.9rem; color:var(--text); }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <a href="../index.html">← 返回首页</a>
+        <a href="index.html">知识库总览</a>
+    </header>
+    <main class="wrap">
+        <h1>📂 边坡介绍</h1>
+        <p class="loc"><strong>定位：</strong>科普边坡的基础理论、结构参数及稳定性原理。</p>
+
+        <h2>边坡几何要素</h2>
+        <ul>
+            <li><strong>坡面角：</strong>坡面与水平面的夹角，直接影响稳定分析与落石风险。</li>
+            <li><strong>台阶（马道）：</strong>为减缓坡度、拦截落石而设置的平台，也是监测布点的重要层级。</li>
+            <li><strong>最终帮坡角：</strong>露天矿最外侧边坡的整体角度，关系全生命周期稳定储备。</li>
+            <li><strong>坡顶线与坡底线：</strong>界定边坡范围的关键线，常用于地表位移监测基准与剖面建模。</li>
+        </ul>
+
+        <h2>边坡破坏模式</h2>
+        <ul>
+            <li><strong>平面滑动：</strong>岩层层面倾向与坡面一致时，沿软弱结构面发生的滑动。</li>
+            <li><strong>楔形体滑动：</strong>两组结构面切割岩体形成楔形块体，沿交线方向滑落。</li>
+            <li><strong>圆弧滑动：</strong>多见于土质边坡或散体堆料（如排土场）的条分法分析模型。</li>
+            <li><strong>倾倒破坏：</strong>反倾层状岩体在重力与裂隙发育条件下发生的弯曲折断。</li>
+        </ul>
+
+        <h2>稳定性评价指标</h2>
+        <p><strong>安全系数：</strong>抗滑力与下滑力的比值，工程上常要求大于 1.2～1.5（具体以规范与设计为准）。</p>
+        <p class="sub">变形阶段</p>
+        <ul>
+            <li><strong>初始蠕变：</strong>变形速率减缓，趋于稳定。</li>
+            <li><strong>等速蠕变：</strong>变形速率近似恒定，处于临界状态，应提高监测频次。</li>
+            <li><strong>加速蠕变：</strong>变形速率剧增，即将破坏，需启动紧急预警与人员撤离预案。</li>
+        </ul>
+    </main>
+</body>
+</html>

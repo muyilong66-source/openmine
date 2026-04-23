@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>典型场景定制方案</title>
+    <style>
+        :root { --text:#1a1a2e; --muted:#5c5c6f; --primary:#0d6efd; --bg:#f8fafc; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; color:var(--text); line-height:1.65; background:var(--bg); }
+        .topbar { background:#fff; border-bottom:1px solid #e2e8f0; padding:16px clamp(16px,4vw,48px); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+        .topbar a { color:var(--primary); font-weight:600; text-decoration:none; }
+        .wrap { max-width:800px; margin:0 auto; padding:40px 20px 72px; }
+        h1 { margin:0 0 8px; font-size:1.45rem; }
+        .loc { color:var(--muted); margin:0 0 24px; font-size:.92rem; }
+        .loc strong { color:var(--primary); }
+        h2 { font-size:1.05rem; margin:26px 0 12px; padding-left:12px; border-left:4px solid var(--primary); }
+        ul { padding-left:1.2rem; color:var(--muted); font-size:.9rem; }
+        li { margin-bottom:10px; }
+        li strong { color:var(--text); }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <a href="../index.html">← 返回首页</a>
+        <a href="index.html">方案总览</a>
+    </header>
+    <main class="wrap">
+        <h1>典型场景定制方案</h1>
+        <p class="loc"><strong>定位：</strong>针对露天矿常见高危场景，组合传感、通讯与平台能力，形成可复制的解决方案包。</p>
+
+        <h2>高陡岩质边坡治理方案</h2>
+        <ul>
+            <li><strong>要点：</strong>GNSS/测量机器人地表加密监测 + 深部测斜/微震 + 雨量与视频联动。</li>
+            <li><strong>目标：</strong>控制加固与削坡过程中的变形突变风险。</li>
+        </ul>
+
+        <h2>松散排土场稳定性方案</h2>
+        <ul>
+            <li><strong>要点：</strong>坡体位移、浸润线、雨量与堆排作业参数综合监测。</li>
+            <li><strong>目标：</strong>防范堆载与降雨耦合导致的圆弧滑动与泥石流。</li>
+        </ul>
+
+        <h2>尾矿库安全在线监测方案</h2>
+        <ul>
+            <li><strong>要点：</strong>坝体与周边地表位移、渗压、水位、雨量及视频监控一体化。</li>
+            <li><strong>目标：</strong>满足在线监测与监管数据上报要求，支撑汛期与极端天气加密预警。</li>
+        </ul>
+    </main>
+</body>
+</html>
