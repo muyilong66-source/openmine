@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<!-- 静态演示页：Logo 使用 assets/logo.png；首屏背景为与本页同目录的 首页图.jpg。 -->
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>露天矿山边坡全要素监测体系</title>
+    <meta content="露天矿,边坡监测,GNSS,安全监测" name="keywords" />
+    <meta content="露天矿山边坡监测技术方案、配套设备与知识库（静态演示）。" name="description" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --nav-h: 72px;
+            --primary: #0d6efd;
+            --primary-dark: #0a58ca;
+            --text: #1a1a2e;
+            --muted: #5c5c6f;
+            --card-bg: #f4f6f9;
+            --card-bg-hover: #e6eaf0;
+            --shadow: 0 8px 32px rgba(0,0,0,.08);
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            color: var(--text);
+            font-size: 16px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { color: inherit; text-decoration: none; }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: var(--nav-h);
+            background: #fff;
+            box-shadow: 0 1px 0 rgba(0,0,0,.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 clamp(16px, 4vw, 48px);
+            gap: 1rem;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .brand img {
+            height: 44px;
+            width: auto;
+            display: block;
+        }
+        .brand-fallback {
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--text);
+            letter-spacing: .02em;
+        }
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: clamp(4px, 1.2vw, 20px);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .main-nav a {
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: var(--muted);
+            transition: background .2s, color .2s;
+        }
+        .main-nav a:hover {
+            background: rgba(13,110,253,.08);
+            color: var(--primary);
+        }
+
+        .nav-dropdown {
+            position: relative;
+        }
+        .nav-dropdown__toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: var(--muted);
+            transition: background .2s, color .2s;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-family: inherit;
+            line-height: inherit;
+            -webkit-appearance: none;
+            appearance: none;
+            text-align: left;
+        }
+        .nav-dropdown__toggle:hover,
+        .nav-dropdown:focus-within > .nav-dropdown__toggle {
+            background: rgba(13,110,253,.08);
+            color: var(--primary);
+        }
+        .nav-dropdown__caret {
+            font-size: 0.65rem;
+            opacity: .75;
+            transition: transform .2s;
+        }
+        .nav-dropdown:hover .nav-dropdown__caret,
+        .nav-dropdown:focus-within .nav-dropdown__caret,
+        .nav-dropdown.nav-dropdown--open .nav-dropdown__caret {
+            transform: rotate(-180deg);
+        }
+        .nav-dropdown__panel {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, 4px);
+            min-width: 200px;
+            list-style: none;
+            margin: 0;
+            padding: 8px 0;
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid #e8ecf0;
+            box-shadow: 0 16px 48px rgba(15,23,42,.12);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity .22s ease, visibility .22s, transform .22s ease;
+            z-index: 1100;
+        }
+        /* 填补按钮与面板之间的空隙，避免鼠标移动时悬停中断导致无法点到子项 */
+        .nav-dropdown__panel::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 100%;
+            height: 14px;
+        }
+        .nav-dropdown:hover .nav-dropdown__panel,
+        .nav-dropdown:focus-within .nav-dropdown__panel,
+        .nav-dropdown.nav-dropdown--open .nav-dropdown__panel {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translate(-50%, 0);
+        }
+        .nav-dropdown__panel a {
+            display: block;
+            padding: 10px 18px;
+            font-size: 0.9rem;
+            color: var(--text);
+            transition: background .15s, color .15s;
+        }
+        .nav-dropdown__panel a:hover {
+            background: rgba(13,110,253,.08);
+            color: var(--primary);
+        }
+        .nav-dropdown__panel li + li {
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .header-tools {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-shrink: 0;
+        }
+        .search-form {
+            display: flex;
+            align-items: center;
+            border: 1px solid #dde1e8;
+            border-radius: 999px;
+            overflow: hidden;
+            background: #fafbfc;
+        }
+        .search-form input {
+            border: none;
+            background: transparent;
+            padding: 8px 14px;
+            width: min(200px, 28vw);
+            font-size: 0.9rem;
+            outline: none;
+        }
+        .search-form button {
+            border: none;
+            background: var(--primary);
+            color: #fff;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background .2s;
+        }
+        .search-form button:hover { background: var(--primary-dark); }
+        .hotline {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            line-height: 1.2;
+        }
+        .hotline span:first-child {
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+        .hotline a {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #e63946;
+            letter-spacing: .05em;
+        }
+        .hotline a:hover { text-decoration: underline; }
+
+        @media (max-width: 1100px) {
+            .main-nav { display: none; }
+            .search-form input { width: 120px; }
+        }
+        @media (max-width: 640px) {
+            .header-tools { flex-direction: column; align-items: flex-end; gap: 8px; }
+            .search-form { display: none; }
+        }
+
+        .hero {
+            position: relative;
+            min-height: calc(100vh - var(--nav-h));
+            min-height: min(92vh, 820px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 48px 24px;
+            background:
+                linear-gradient(rgba(15,23,42,.72), rgba(30,58,95,.78)),
+                url("首页图.jpg") center/cover no-repeat;
+            color: #fff;
+        }
+        .hero-inner { max-width: 920px; }
+        .hero h1 {
+            margin: 0 0 16px;
+            font-size: clamp(1.75rem, 4.5vw, 2.75rem);
+            font-weight: 700;
+            text-shadow: 0 2px 24px rgba(0,0,0,.35);
+            letter-spacing: .02em;
+        }
+        .hero .sub {
+            margin: 0 0 36px;
+            font-size: clamp(1rem, 2.2vw, 1.15rem);
+            opacity: .95;
+            font-weight: 300;
+            letter-spacing: .12em;
+        }
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: transform .15s, box-shadow .15s, background .2s;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(13,110,253,.35);
+        }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-outline {
+            background: rgba(255,255,255,.12);
+            color: #fff;
+            border: 2px solid rgba(255,255,255,.85);
+            backdrop-filter: blur(6px);
+        }
+        .btn-outline:hover {
+            background: rgba(255,255,255,.22);
+        }
+
+        .solutions-strip {
+            background: linear-gradient(90deg, #0f172a 0%, #1e3a5f 100%);
+            color: #e2e8f0;
+            text-align: center;
+            padding: 22px 24px;
+            font-size: 0.98rem;
+            line-height: 1.65;
+        }
+        .solutions-strip strong { color: #fff; }
+
+        #products {
+            padding: 72px clamp(20px, 5vw, 56px) 96px;
+            background: linear-gradient(180deg, #fafbfc 0%, #fff 18%);
+        }
+        .section-title {
+            text-align: center;
+            margin: 0 0 12px;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+        }
+        .section-desc {
+            text-align: center;
+            color: var(--muted);
+            margin: 0 auto 40px;
+            max-width: 720px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 26px;
+            max-width: 1320px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(15,23,42,.06);
+            transition: transform .28s cubic-bezier(.34, 1.56, .64, 1), box-shadow .28s, background .28s;
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 22px 56px rgba(15,23,42,.14);
+            background: var(--card-bg-hover);
+        }
+        .product-card > a {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 26px 22px 56px;
+            position: relative;
+            z-index: 1;
+            min-height: 100%;
+        }
+        .product-card .icon-wrap {
+            width: 58px;
+            height: 58px;
+            border-radius: 16px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            box-shadow: 0 4px 16px rgba(13,110,253,.12);
+            transition: box-shadow .28s, transform .28s;
+        }
+        .product-card:hover .icon-wrap {
+            box-shadow: 0 8px 24px rgba(13,110,253,.22);
+        }
+        .product-card .icon-wrap svg {
+            width: 30px;
+            height: 30px;
+            stroke: var(--primary);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .product-card .icon-wrap .fill-primary { fill: var(--primary); stroke: none; }
+
+        /* 图标微动效 */
+        @keyframes wave-y {
+            0%, 100% { transform: translateY(0); opacity: .85; }
+            50% { transform: translateY(-3px); opacity: 1; }
+        }
+        @keyframes pulse-line {
+            0%, 100% { stroke-opacity: 1; }
+            50% { stroke-opacity: .35; }
+        }
+        @keyframes droplet {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+        @keyframes sun-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .75; transform: scale(.92); }
+        }
+        @keyframes record-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .3; }
+        }
+        @keyframes strain-flex {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(2px); }
+        }
+        @keyframes node-blink {
+            0%, 100% { opacity: 1; }
+            40% { opacity: .4; }
+            60% { opacity: .4; }
+        }
+
+        .product-card:hover .icon-anim-wave path { animation: wave-y 1.2s ease-in-out infinite; }
+        .product-card:hover .icon-anim-wave path:nth-child(2) { animation-delay: .15s; }
+        .product-card:hover .icon-anim-wave path:nth-child(3) { animation-delay: .3s; }
+
+        .product-card:hover .icon-anim-pulse path { animation: pulse-line 1.1s ease-in-out infinite; }
+        .product-card:hover .icon-anim-dtu > path { animation: pulse-line 1.1s ease-in-out infinite; }
+
+        .product-card:hover .icon-anim-drop path:first-child { animation: droplet 1.4s ease-in-out infinite; transform-origin: center; }
+
+        .product-card:hover .icon-anim-sun circle { animation: sun-pulse 1.5s ease-in-out infinite; transform-origin: 12px 12px; }
+
+        .product-card:hover .icon-anim-cam .rec { animation: record-blink 1s step-end infinite; }
+
+        .product-card:hover .icon-anim-strain path:nth-child(2) { animation: strain-flex 1.2s ease-in-out infinite; }
+
+        .product-card:hover .icon-anim-dtu rect:last-of-type { animation: node-blink 1.2s ease-in-out infinite; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .product-card:hover .icon-wrap svg * { animation: none !important; }
+            .product-card:hover { transform: translateY(-4px); }
+        }
+
+        .product-card h3 {
+            margin: 0 0 10px;
+            font-size: 1.12rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: .02em;
+        }
+        .card-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+        .card-core {
+            margin: 0 0 10px;
+            font-size: 0.86rem;
+            color: var(--text);
+            line-height: 1.55;
+        }
+        .card-devices {
+            margin: 0 0 10px;
+            font-size: 0.82rem;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+        .card-devices strong {
+            display: block;
+            color: var(--text);
+            font-size: 0.78rem;
+            margin-bottom: 6px;
+        }
+        .card-devices ul {
+            margin: 0;
+            padding-left: 1.1rem;
+        }
+        .card-devices li { margin-bottom: 4px; }
+        .card-value {
+            margin: 0;
+            font-size: 0.82rem;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+        .card-value strong {
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .card-cta {
+            position: absolute;
+            left: 22px;
+            right: 22px;
+            bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary) 0%, #2563eb 100%);
+            color: #fff !important;
+            font-size: 0.88rem;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity .28s, transform .28s;
+            pointer-events: none;
+            box-shadow: 0 8px 20px rgba(13,110,253,.3);
+        }
+        .product-card:hover .card-cta {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .card-cta span.arrow {
+            display: inline-block;
+            transition: transform .2s;
+        }
+        .product-card:hover .card-cta span.arrow {
+            transform: translateX(4px);
+        }
+
+        .product-card .hover-intro {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 18px 22px 62px;
+            background: linear-gradient(180deg, transparent 0%, rgba(15,23,42,.88) 35%, rgba(15,23,42,.94) 100%);
+            color: #e2e8f0;
+            font-size: 0.84rem;
+            line-height: 1.55;
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity .32s, transform .32s;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .product-card:hover .hover-intro {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .hover-intro .hint-title {
+            font-weight: 700;
+            color: #fff;
+            font-size: 0.8rem;
+            margin-bottom: 6px;
+            letter-spacing: .06em;
+        }
+
+        /* —— 技术知识库 —— */
+        .knowledge-hub {
+            padding: 72px clamp(20px, 5vw, 56px) 88px;
+            background: linear-gradient(180deg, #fff 0%, #f8fafc 40%, #f1f5f9 100%);
+            border-top: 1px solid #e2e8f0;
+        }
+        .knowledge-hub .hub-title {
+            text-align: center;
+            margin: 0 0 12px;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+            color: var(--text);
+        }
+        .knowledge-hub .hub-lead {
+            text-align: center;
+            color: var(--muted);
+            max-width: 720px;
+            margin: 0 auto 28px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        .kb-toc {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            max-width: 1000px;
+            margin: 0 auto 40px;
+            padding: 0;
+            list-style: none;
+        }
+        .kb-toc a {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text);
+            transition: background .2s, border-color .2s, color .2s, box-shadow .2s;
+        }
+        .kb-toc a:hover {
+            background: rgba(13,110,253,.08);
+            border-color: rgba(13,110,253,.35);
+            color: var(--primary);
+            box-shadow: 0 4px 14px rgba(13,110,253,.12);
+        }
+        .kb-branches {
+            max-width: 920px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 36px;
+        }
+        .kb-branch {
+            background: #fff;
+            border-radius: 18px;
+            padding: clamp(22px, 4vw, 32px);
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 40px rgba(15,23,42,.06);
+        }
+        .kb-branch > header {
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(13,110,253,.15);
+        }
+        .kb-branch > header h3 {
+            margin: 0 0 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .kb-branch .kb-emoji {
+            font-size: 1.35rem;
+            line-height: 1;
+        }
+        .kb-loc {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.65;
+        }
+        .kb-loc strong {
+            color: var(--primary);
+            font-weight: 700;
+        }
+        .kb-block {
+            margin-top: 22px;
+        }
+        .kb-block:first-of-type {
+            margin-top: 0;
+        }
+        .kb-block h4 {
+            margin: 0 0 12px;
+            font-size: 1.02rem;
+            font-weight: 700;
+            color: #0f172a;
+            padding-left: 12px;
+            border-left: 4px solid var(--primary);
+        }
+        .kb-block p {
+            margin: 0 0 10px;
+            font-size: 0.9rem;
+            color: var(--text);
+            line-height: 1.7;
+        }
+        .kb-block ul {
+            margin: 0;
+            padding-left: 1.25rem;
+            font-size: 0.88rem;
+            color: var(--muted);
+            line-height: 1.65;
+        }
+        .kb-block li {
+            margin-bottom: 8px;
+        }
+        .kb-block li strong {
+            color: var(--text);
+        }
+        .kb-block .kb-sublist-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text);
+            margin: 14px 0 8px;
+        }
+
+        .site-footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 48px clamp(20px, 5vw, 56px) 24px;
+            font-size: 0.9rem;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            max-width: 1100px;
+            margin: 0 auto 32px;
+        }
+        .site-footer h4 {
+            color: #fff;
+            margin: 0 0 12px;
+            font-size: 1rem;
+        }
+        .site-footer a:hover { color: #fff; }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,.08);
+            font-size: 0.82rem;
+        }
+
+        /* 触摸屏无悬停：始终显示主按钮提示，隐藏依赖 hover 的底层说明层 */
+        @media (hover: none) {
+            .product-card .card-cta {
+                opacity: 1;
+                transform: none;
+            }
+            .product-card .hover-intro {
+                display: none;
+            }
+            .product-card:active {
+                transform: scale(0.985);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="brand">
+        <a href="#top">
+            <img src="assets/logo.png" alt="露天矿山监测方案" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+            <span class="brand-fallback" style="display:none">露天矿山监测方案</span>
+        </a>
+    </div>
+    <nav class="main-nav" aria-label="主导航">
+        <a href="#top">首页</a>
+        <div class="nav-dropdown">
+            <button type="button" class="nav-dropdown__toggle" id="nav-solutions-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="nav-solutions-menu">
+                全方位解决方案 <span class="nav-dropdown__caret" aria-hidden="true">▼</span>
+            </button>
+            <ul class="nav-dropdown__panel" id="nav-solutions-menu" role="menu" aria-labelledby="nav-solutions-trigger">
+                <li role="none"><a role="menuitem" href="solutions/index.html">方案总览</a></li>
+                <li role="none"><a role="menuitem" href="#solutions">本页导读</a></li>
+                <li role="none"><a role="menuitem" href="solutions/integrated-monitoring.html">空天地深一体化</a></li>
+                <li role="none"><a role="menuitem" href="solutions/lifecycle.html">全生命周期管理</a></li>
+                <li role="none"><a role="menuitem" href="solutions/smart-platform.html">智慧数据平台</a></li>
+                <li role="none"><a role="menuitem" href="solutions/typical-scenarios.html">典型场景定制</a></li>
+            </ul>
+        </div>
+        <div class="nav-dropdown">
+            <button type="button" class="nav-dropdown__toggle" id="nav-equipment-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="nav-equipment-menu">
+                配套监测设备 <span class="nav-dropdown__caret" aria-hidden="true">▼</span>
+            </button>
+            <ul class="nav-dropdown__panel" id="nav-equipment-menu" role="menu" aria-labelledby="nav-equipment-trigger">
+                <li role="none"><a role="menuitem" href="equipment/index.html">设备总览</a></li>
+                <li role="none"><a role="menuitem" href="#equipment-guide">本页导读</a></li>
+                <li role="none"><a role="menuitem" href="equipment/deformation.html">形变监测类</a></li>
+                <li role="none"><a role="menuitem" href="equipment/deep-sensing.html">深部感知类</a></li>
+                <li role="none"><a role="menuitem" href="equipment/env-hydro.html">环境与水文类</a></li>
+                <li role="none"><a role="menuitem" href="equipment/daq-comm.html">采集与传输</a></li>
+                <li role="none"><a role="menuitem" href="equipment/video-alarm.html">视频与辅助</a></li>
+                <li role="none"><a role="menuitem" href="#product-cards">露天矿设备卡片</a></li>
+            </ul>
+        </div>
+        <div class="nav-dropdown">
+            <button type="button" class="nav-dropdown__toggle" id="nav-knowledge-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="nav-knowledge-menu">
+                技术知识库 <span class="nav-dropdown__caret" aria-hidden="true">▼</span>
+            </button>
+            <ul class="nav-dropdown__panel" id="nav-knowledge-menu" role="menu" aria-labelledby="nav-knowledge-trigger">
+                <li role="none"><a role="menuitem" href="knowledge/index.html">知识库总览</a></li>
+                <li role="none"><a role="menuitem" href="knowledge/openpit.html">露天矿</a></li>
+                <li role="none"><a role="menuitem" href="knowledge/slope.html">边坡介绍</a></li>
+                <li role="none"><a role="menuitem" href="knowledge/landslide.html">滑坡原因</a></li>
+                <li role="none"><a role="menuitem" href="knowledge/standards.html">安全规范</a></li>
+                <li role="none"><a role="menuitem" href="knowledge/supervision.html">监管要求</a></li>
+            </ul>
+        </div>
+        <a href="#service">售后支持与服务</a>
+        <a href="#about">了解我们</a>
+    </nav>
+    <div class="header-tools">
+        <form class="search-form" action="#" method="get" role="search" onsubmit="return false;">
+            <input type="search" name="keyword" placeholder="搜索设备型号" autocomplete="off" aria-label="搜索设备型号">
+            <button type="submit">搜索</button>
+        </form>
+        <div class="hotline">
+            <span>全国服务热线</span>
+            <a href="tel:18600213985">马总186****3985</a>
+            <a href="tel:18201069835">杨龙18201069835</a>
+        </div>
+    </div>
+</header>
+
+<section class="hero" id="top">
+    <div class="hero-inner">
+        <h1>露天矿山边坡全要素监测体系技术方案</h1>
+        <p class="sub">表面 · 深部 · 水文 · 气象 · 视频 · 结构受力 · 采集传输 —— 一体化安全感知</p>
+        <div class="hero-actions">
+            <a class="btn btn-primary" href="#product-cards">浏览设备</a>
+            <a class="btn btn-outline" href="tel:18201069835">联系技术专家</a>
+        </div>
+    </div>
+</section>
+
+<section id="solutions" class="knowledge-hub" aria-labelledby="solutions-hub-title">
+    <h2 id="solutions-hub-title" class="hub-title">全方位解决方案</h2>
+    <p class="hub-lead">本栏目侧重<strong>宏观架构、技术路线及应用场景</strong>的覆盖：空天地深一体化感知、矿山全生命周期管理、智慧矿山数据平台与典型场景定制方案相互衔接，形成可实施的顶层设计与分期建设路径。顶部导航可进入各子主题的<strong>独立页面</strong>（<code>solutions/*.html</code>），亦可在此阅读摘要。</p>
+
+    <nav aria-label="方案子目录导航">
+        <ul class="kb-toc">
+            <li><a href="solutions/index.html">独立页面总览</a></li>
+            <li><a href="solutions/integrated-monitoring.html">空天地深一体化</a></li>
+            <li><a href="solutions/lifecycle.html">全生命周期</a></li>
+            <li><a href="solutions/smart-platform.html">智慧数据平台</a></li>
+            <li><a href="solutions/typical-scenarios.html">典型场景定制</a></li>
+        </ul>
+    </nav>
+
+    <div class="kb-branches">
+        <article class="kb-branch" id="sol-integrated">
+            <header>
+                <h3><span class="kb-emoji" aria-hidden="true">◇</span> 空天地深一体化监测体系</h3>
+                <p class="kb-loc"><strong>要点：</strong>卫星普查、地表精测、深部传感与无人机应急协同。</p>
+            </header>
+            <div class="kb-block">
+                <h4>卫星遥感（InSAR）普查方案</h4>
+                <p>广域隐患排查与早期识别，与地表监测网交叉验证、分级管控。</p>
+            </div>
+            <div class="kb-block">
+                <h4>地表高精度位移监测方案</h4>
+                <p>基于北斗/GNSS 的实时形变监测，支撑帮坡与构筑物关键断面。</p>
+            </div>
+            <div class="kb-block">
+                <h4>深部结构健康监测方案</h4>
+                <p>测斜、应力与地下水位等综合监测，揭示深部滑动面与渗流效应。</p>
+            </div>
+            <div class="kb-block">
+                <h4>无人机应急巡检方案</h4>
+                <p>灾后快速建模与应急评估，生成实景三维与断面复测资料。</p>
+            </div>
+        </article>
+
+        <article class="kb-branch" id="sol-lifecycle">
+            <header>
+                <h3><span class="kb-emoji" aria-hidden="true">◇</span> 矿山全生命周期管理</h3>
+                <p class="kb-loc"><strong>要点：</strong>建设期基线—运营期动态预警—闭坑期长期跟踪。</p>
+            </header>
+            <div class="kb-block">
+                <h4>建设期安全评估方案</h4>
+                <p>地质勘察与初始稳定性分析，建立监测基准与首期布点设计。</p>
+            </div>
+            <div class="kb-block">
+                <h4>运营期动态预警方案</h4>
+                <p>生产过程中的实时安全监控与分级响应，服务日常生产决策。</p>
+            </div>
+            <div class="kb-block">
+                <h4>闭坑期生态修复监测</h4>
+                <p>尾矿库与排土场等长期稳定性跟踪，支撑生态修复与监管验收。</p>
+            </div>
+        </article>
+
+        <article class="kb-branch" id="sol-platform">
+            <header>
+                <h3><span class="kb-emoji" aria-hidden="true">◇</span> 智慧矿山数据平台</h3>
+                <p class="kb-loc"><strong>要点：</strong>可视化指挥、融合分析与自动化预警发布。</p>
+            </header>
+            <div class="kb-block">
+                <h4>三维可视化指挥系统</h4>
+                <p>数字孪生与 GIS 地图融合展示，一图掌握风险态势。</p>
+            </div>
+            <div class="kb-block">
+                <h4>多源数据融合分析</h4>
+                <p>环境、位移、视频等数据综合研判，提升预警解释性。</p>
+            </div>
+            <div class="kb-block">
+                <h4>自动化预警发布系统</h4>
+                <p>分级报警与多渠道信息推送机制，对接应急预案。</p>
+            </div>
+        </article>
+
+        <article class="kb-branch" id="sol-scenarios">
+            <header>
+                <h3><span class="kb-emoji" aria-hidden="true">◇</span> 典型场景定制方案</h3>
+                <p class="kb-loc"><strong>要点：</strong>针对高陡边坡、排土场、尾矿库等组合传感与平台能力。</p>
+            </header>
+            <div class="kb-block">
+                <h4>高陡岩质边坡治理方案</h4>
+                <p>地表加密监测与深部感知联动，服务治理与加固全过程。</p>
+            </div>
+            <div class="kb-block">
+                <h4>松散排土场稳定性方案</h4>
+                <p>位移、浸润线与作业荷载综合监测，防范降雨—堆载耦合失稳。</p>
+            </div>
+            <div class="kb-block">
+                <h4>尾矿库安全在线监测方案</h4>
+                <p>坝体与渗流多参数在线监测，满足监管与汛期加严要求。</p>
+            </div>
+        </article>
+    </div>
+</section>
+
+<section id="products">
+    <h2 class="section-title">配套监测设备</h2>
+    <p class="section-desc">
+        本栏目侧重<strong>硬件参数、功能分类及系统组成</strong>。下方「设备体系导读」与独立页面（<code>equipment/*.html</code>）对应；再往下为<strong>露天矿主要监测设备卡片</strong>，悬停有动效，点击可带 <code>product_cat</code> 跳转列表筛选。
+    </p>
+
+    <section id="equipment-guide" class="knowledge-hub" style="padding-top:0;padding-bottom:32px;background:transparent;border:none;" aria-labelledby="equipment-guide-title">
+        <h3 id="equipment-guide-title" class="hub-title" style="font-size:clamp(1.2rem,2.5vw,1.45rem)">设备体系导读</h3>
+        <p class="hub-lead" style="margin-bottom:28px">按形变、深部、环境水文、采集传输、视频辅助五大类梳理典型硬件，便于与「全方位解决方案」中的架构设计对齐选型。</p>
+        <nav aria-label="设备子目录导航">
+            <ul class="kb-toc">
+                <li><a href="equipment/index.html">独立页面总览</a></li>
+                <li><a href="equipment/deformation.html">形变监测类</a></li>
+                <li><a href="equipment/deep-sensing.html">深部感知类</a></li>
+                <li><a href="equipment/env-hydro.html">环境与水文类</a></li>
+                <li><a href="equipment/daq-comm.html">采集与传输</a></li>
+                <li><a href="equipment/video-alarm.html">视频与辅助</a></li>
+            </ul>
+        </nav>
+        <div class="kb-branches">
+            <article class="kb-branch" id="eq-deform">
+                <header><h3>形变监测类</h3></header>
+                <div class="kb-block">
+                    <ul>
+                        <li><strong>GNSS 高精度接收机：</strong>毫米级定位，全天候表面位移监测。</li>
+                        <li><strong>测量机器人：</strong>免棱镜自动全站仪，多点高频扫描。</li>
+                        <li><strong>裂缝计与伸缩仪：</strong>针对地表裂缝开合度的直接测量。</li>
+                    </ul>
+                </div>
+            </article>
+            <article class="kb-branch" id="eq-deep">
+                <header><h3>深部感知类</h3></header>
+                <div class="kb-block">
+                    <ul>
+                        <li><strong>固定式/便携式测斜仪：</strong>监测深部岩土体水平位移。</li>
+                        <li><strong>光纤光栅传感器：</strong>分布式应变与温度监测。</li>
+                        <li><strong>微震监测仪：</strong>捕捉岩体内部破裂信号，预判深层崩塌。</li>
+                    </ul>
+                </div>
+            </article>
+            <article class="kb-branch" id="eq-env">
+                <header><h3>环境与水文类</h3></header>
+                <div class="kb-block">
+                    <ul>
+                        <li><strong>渗压计与水位计：</strong>监测地下水位及孔隙水压力变化。</li>
+                        <li><strong>雨量计与气象站：</strong>采集降雨量、风速等诱发因素数据。</li>
+                    </ul>
+                </div>
+            </article>
+            <article class="kb-branch" id="eq-daq">
+                <header><h3>数据采集与传输</h3></header>
+                <div class="kb-block">
+                    <ul>
+                        <li><strong>智能遥测终端：</strong>数据采集、存储与边缘计算。</li>
+                        <li><strong>低功耗传输网关：</strong>支持 4G/5G/NB-IoT/LoRa 等多种通讯方式。</li>
+                        <li><strong>太阳能供电系统：</strong>适应野外无电环境的持续供电保障。</li>
+                    </ul>
+                </div>
+            </article>
+            <article class="kb-branch" id="eq-video">
+                <header><h3>视频监控与辅助</h3></header>
+                <div class="kb-block">
+                    <ul>
+                        <li><strong>高清球机与枪机：</strong>现场可视化复核。</li>
+                        <li><strong>声光报警器：</strong>现场紧急撤离信号提示。</li>
+                    </ul>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <h3 class="section-title" style="font-size:clamp(1.15rem,2.2vw,1.35rem);margin-top:8px">露天矿监测设备卡片（按业务主类）</h3>
+    <p class="section-desc" style="margin-top:12px;margin-bottom:36px">与导读中的「形变/深部/环境…」分类互为补充；下列卡片侧重露天矿业务主类与列表筛选参数。</p>
+    <div id="product-cards" class="product-grid">
+
+        <article class="product-card">
+            <a href="equipment/deformation.html" data-cat="surface" aria-label="表面位移监测 — 查看该类别产品列表">
+                <div class="icon-wrap icon-anim-wave" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 17l6-6 4 4 8-8"/>
+                        <path d="M14 7h7v7"/>
+                        <circle cx="17" cy="17" r="1.5" class="fill-primary" stroke="none"/>
+                    </svg>
+                </div>
+                <h3>表面位移监测</h3>
+                <p class="card-label">核心功能</p>
+                <p class="card-core">实时捕捉边坡表面的三维坐标变化（X, Y, Z），是判断边坡整体稳定性最直观、最基础的数据。</p>
+                <div class="card-devices">
+                    <strong>包含设备</strong>
+                    <ul>
+                        <li><strong>GNSS 高精度接收机</strong> — 北斗/GPS 卫星定位，全天候毫米级位移监测。</li>
+                        <li><strong>柔性测斜仪</strong> — 表面浅层倾斜变化的连续监测。</li>
+                        <li><strong>拉线位移计</strong> — 裂缝开合度的直接物理测量。</li>
+                    </ul>
+                </div>
+                <p class="card-value"><strong>应用价值：</strong>掌握边坡变形速率与方向，为滑坡预警提供核心依据。</p>
+                <span class="card-cta">点击查看详情 <span class="arrow">→</span></span>
+            </a>
+            <div class="hover-intro">
+                <div class="hint-title">层级跳转说明</div>
+                跳转至 <code style="opacity:.9">product_cat=surface</code>，列表页可解析该参数，仅展示 GNSS、柔性测斜、拉线位移等表面位移类设备。
+            </div>
+        </article>
+
+        <article class="product-card">
+            <a href="equipment/deep-sensing.html" data-cat="deep" aria-label="深部位移监测 — 查看该类别产品列表">
+                <div class="icon-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" class="icon-anim-strain">
+                        <path d="M12 2v20M12 2l-4 4M12 2l4 4"/>
+                        <path d="M8 22h8"/>
+                    </svg>
+                </div>
+                <h3>深部位移监测</h3>
+                <p class="card-label">核心功能</p>
+                <p class="card-core">深入岩土体内部，监测不同深度的水平位移和倾斜变化，发现隐蔽的滑动面。</p>
+                <div class="card-devices">
+                    <strong>包含设备</strong>
+                    <ul>
+                        <li><strong>固定式测斜仪</strong> — 埋设于钻孔内，长期监测深部倾斜角变化。</li>
+                        <li><strong>柔性测斜孔</strong> — 随岩土体变形弯曲，通过读数仪获取深层变形曲线。</li>
+                    </ul>
+                </div>
+                <p class="card-value"><strong>应用价值：</strong>精准定位潜在滑坡的滑动面深度，预防突发性深层崩塌。</p>
+                <span class="card-cta">点击查看详情 <span class="arrow">→</span></span>
+            </a>
+            <div class="hover-intro">
+                <div class="hint-title">层级跳转说明</div>
+                跳转至 <code style="opacity:.9">product_cat=deep</code>，列表页可筛选固定式测斜、柔性测斜孔等深部监测设备。
+            </div>
+        </article>
+
+        <article class="product-card">
+            <a href="equipment/env-hydro.html" data-cat="groundwater" aria-label="地下水渗压监测 — 查看该类别产品列表">
+                <div class="icon-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" class="icon-anim-drop">
+                        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                    </svg>
+                </div>
+                <h3>地下水 / 渗压监测</h3>
+                <p class="card-label">核心功能</p>
+                <p class="card-core">监测地下水位波动及孔隙水压力变化；水是导致边坡失稳的主要诱因之一。</p>
+                <div class="card-devices">
+                    <strong>包含设备</strong>
+                    <ul>
+                        <li><strong>渗压计</strong> — 埋设在土体或混凝土中，测量孔隙水压力。</li>
+                        <li><strong>水位计</strong> — 实时监测钻孔或观测井内地下水位升降。</li>
+                    </ul>
+                </div>
+                <p class="card-value"><strong>应用价值：</strong>分析降雨或排水对边坡稳定性的影响，评估水致灾害风险。</p>
+                <span class="card-cta">点击查看详情 <span class="arrow">→</span></span>
+            </a>
+            <div class="hover-intro">
+                <div class="hint-title">层级跳转说明</div>
+                跳转至 <code style="opacity:.9">product_cat=groundwater</code>，可聚合渗压计、水位计等水文类传感器条目。
+            </div>
+        </article>
+
+        <article class="product-card">
+            <a href="equipment/env-hydro.html" data-cat="meteo" aria-label="雨量气象监测 — 查看该类别产品列表">
+                <div class="icon-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" class="icon-anim-sun">
+                        <path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/>
+                        <circle cx="12" cy="12" r="4"/>
+                    </svg>
+                </div>
+                <h3>雨量 / 气象监测</h3>
+                <p class="card-label">核心功能</p>
+                <p class="card-core">采集矿山现场气象环境数据，重点关注降雨对边坡冲刷与入渗的影响。</p>
+                <div class="card-devices">
+                    <strong>包含设备</strong>
+                    <ul>
+                        <li><strong>翻斗式雨量站</strong> — 高精度记录实时降雨量与累计降雨量。</li>
+                        <li><strong>气象六要素站</strong> — 风速、风向、温度、湿度、气压及降雨量。</li>
+                    </ul>
+                </div>
+                <p class="card-value"><strong>应用价值：</strong>建立降雨量与边坡变形的关联模型，实现气象灾害预警。</p>
+                <span class="card-cta">点击查看详情 <span class="arrow">→</span></span>
+            </a>
+            <div class="hover-intro">
+                <div class="hint-title">层级跳转说明</div>
+                跳转至 <code style="opacity:.9">product_cat=meteo</code>，列表页可筛选雨量站、气象站等设备。
+            </div>
+        </article>
+
+        <article class="product-card">
+            <a href="equipment/video-alarm.html" data-cat="video" aria-label="视频图像监测 — 查看该类别产品列表">
+                <div class="icon-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" class="icon-anim-cam">
+                        <rect x="2" y="6" width="20" height="12" rx="2"/>
+                        <path d="M10 10l5 3-5 3z"/>
+                        <circle class="rec" cx="18" cy="8" r="2" fill="#ef4444" stroke="none"/>
+                    </svg>
+                </div>
+                <h3>视频 / 图像监测</h3>
+                <p class="card-label">核心功能</p>
+                <p class="card-core">提供可视化现场实况，结合 AI 算法实现智能识别与复核。</p>
+                <div class="card-devices">
+                    <strong>包含设备</strong>
+                    <ul>
+                        <li><strong>可见光高清球机</strong> — 远程查看边坡全景与细节。</li>
+                        <li><strong>红外热成像仪</strong> — 夜间或恶劣天气下的监测补充。</li>
+                        <li><strong>AI 智能识别摄像机</strong> — 落石、裂缝扩展、人员入侵等异常识别。</li>
+                    </ul>
+                </div>
+                <p class="card-value"><strong>应用价值：</strong>「所见即所得」，用于警情复核与现场可视化管理。</p>
+                <span class="card-cta">点击查看详情 <span class="arrow">→</span></span>
+            </a>
+            <div class="hover-intro">
+                <div class="hint-title">层级跳转说明</div>
+                跳转至 <code style="opacity:.9">product_cat=video</code>，列表页可筛选球机、热成像、AI 摄像机等视频类设备。
+            </div>
+        </article>
+
+        <article class="product-card">
+            <a href="equipment/deep-sensing.html" data-cat="strain" aria-label="应力应变监测 — 查看该类别产品列表">
+                <div class="icon-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" class="icon-anim-strain">
+                        <path d="M4 19h16"/><path d="M6 16l6-10 6 10"/><path d="M9.5 11h5"/>
+                    </svg>
+                </div>
+                <h3>应力 / 应变监测</h3>
+                <p class="card-label">核心功能</p>
+                <p class="card-core">监测支护结构（锚索、挡墙等）受力状态，评估支护系统有效性。</p>
+                <div class="card-devices">
+                    <strong>包含设备</strong>
+                    <ul>
+                        <li><strong>锚索测力计</strong> — 监测锚索预应力损失。</li>
+                        <li><strong>钢筋计</strong> — 混凝土结构内部钢筋应力变化。</li>
+                        <li><strong>土压力盒</strong> — 土体与挡墙间接触压力。</li>
+                    </ul>
+                </div>
+                <p class="card-value"><strong>应用价值：</strong>确保加固工程处于健康状态，防止支护失效导致灾害。</p>
+                <span class="card-cta">点击查看详情 <span class="arrow">→</span></span>
+            </a>
+            <div class="hover-intro">
+                <div class="hint-title">层级跳转说明</div>
+                跳转至 <code style="opacity:.9">product_cat=strain</code>，列表页可筛选锚索计、钢筋计、土压力盒等。
+            </div>
+        </article>
+
+        <article class="product-card">
+            <a href="equipment/daq-comm.html" data-cat="dtu" aria-label="数据采集与传输终端 — 查看该类别产品列表">
+                <div class="icon-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" class="icon-anim-dtu">
+                        <rect x="4" y="4" width="16" height="16" rx="2"/>
+                        <rect x="9" y="9" width="6" height="6" rx="1"/>
+                        <path d="M12 2v2M12 20v2M2 12h2M20 12h2"/>
+                    </svg>
+                </div>
+                <h3>数据采集与传输终端</h3>
+                <p class="card-label">核心功能</p>
+                <p class="card-core">系统「神经中枢」：汇聚前端传感器数据并上传至云端平台。</p>
+                <div class="card-devices">
+                    <strong>包含设备</strong>
+                    <ul>
+                        <li><strong>智能采集仪</strong> — 多通道接入，具备边缘计算能力。</li>
+                        <li><strong>工业级网关</strong> — 4G/5G/NB-IoT/LoRa 等多种通讯。</li>
+                        <li><strong>低功耗组网设备</strong> — 适配无市电、弱信号偏远矿区。</li>
+                    </ul>
+                </div>
+                <p class="card-value"><strong>应用价值：</strong>保障数据传输稳定与实时性，适应矿山恶劣环境。</p>
+                <span class="card-cta">点击查看详情 <span class="arrow">→</span></span>
+            </a>
+            <div class="hover-intro">
+                <div class="hint-title">层级跳转说明</div>
+                跳转至 <code style="opacity:.9">product_cat=dtu</code>，列表页可筛选采集仪、网关、低功耗终端等。
+            </div>
+        </article>
+
+    </div>
+</section>
+
+<section id="knowledge" class="knowledge-hub" aria-labelledby="knowledge-hub-title">
+    <h2 id="knowledge-hub-title" class="hub-title">技术知识库</h2>
+    <p class="hub-lead">面向露天矿山边坡安全监测场景，从行业背景、边坡基础理论、滑坡机理、国家标准到监管政策分层梳理，便于快速建立知识体系与方案合规框架。顶部目录中「独立页面」可在<strong>新页面</strong>打开完整正文（<code>knowledge/*.html</code>）；下方仍可阅读本页内嵌的同名章节。</p>
+
+    <nav aria-label="知识库子目录导航">
+        <ul class="kb-toc">
+            <li><a href="knowledge/index.html">独立页面总览</a></li>
+            <li><a href="knowledge/openpit.html">露天矿</a></li>
+            <li><a href="knowledge/slope.html">边坡介绍</a></li>
+            <li><a href="knowledge/landslide.html">滑坡原因</a></li>
+            <li><a href="knowledge/standards.html">安全规范</a></li>
+            <li><a href="knowledge/supervision.html">监管要求</a></li>
+        </ul>
+    </nav>
+
+    <div class="kb-branches">
+
+        <article class="kb-branch" id="kb-openpit">
+            <header>
+                <h3><span class="kb-emoji" aria-hidden="true">📂</span> 子目录一：露天矿</h3>
+                <p class="kb-loc"><strong>定位：</strong>介绍行业背景、开采特点及监测的必要性，帮助用户理解应用场景。</p>
+            </header>
+
+            <div class="kb-block">
+                <h4>露天矿山概述</h4>
+                <p><strong>开采工艺简介：</strong>穿孔、爆破、采装、运输、排土五大环节均会改变边坡应力场与岩体完整性，是边坡变形与失稳的重要工程诱因。</p>
+                <p class="kb-sublist-title">边坡类型划分</p>
+                <ul>
+                    <li><strong>工作帮边坡：</strong>正在进行开采作业的区域，几何形态与荷载条件变动频繁，需动态监测。</li>
+                    <li><strong>非工作帮边坡：</strong>已结束开采、需长期保持稳定的区域，关注长期蠕变与地下水作用。</li>
+                    <li><strong>排土场边坡：</strong>由废石堆筑而成，结构相对松散，易发生泥石流或滑坡，需重点监测浸润线与坡体位移。</li>
+                </ul>
+            </div>
+
+            <div class="kb-block">
+                <h4>矿山全生命周期管理</h4>
+                <ul>
+                    <li><strong>建设期：</strong>地质勘察与原始地形建模，为后续监测基准与设计提供依据。</li>
+                    <li><strong>运营期：</strong>日常生产监测与动态稳定性分析，支撑预警与生产决策。</li>
+                    <li><strong>闭坑期：</strong>生态修复与长期隐患监测，防止滞后性滑坡与环境次生灾害。</li>
+                </ul>
+            </div>
+
+            <div class="kb-block">
+                <h4>典型应用场景</h4>
+                <ul>
+                    <li><strong>高陡边坡监测：</strong>针对高度超过 100 米的特大型边坡，强调多源监测与阈值分级。</li>
+                    <li><strong>软岩矿山监测：</strong>针对风化严重、强度低的岩体，关注降雨与蠕变耦合效应。</li>
+                    <li><strong>深凹露天矿：</strong>关注底部积水、渗流场变化与边坡应力集中问题，需水文与位移联合分析。</li>
+                </ul>
+            </div>
+        </article>
+
+        <article class="kb-branch" id="kb-slope">
+            <header>
+                <h3><span class="kb-emoji" aria-hidden="true">📂</span> 子目录二：边坡介绍</h3>
+                <p class="kb-loc"><strong>定位：</strong>科普边坡的基础理论、结构参数及稳定性原理。</p>
+            </header>
+
+            <div class="kb-block">
+                <h4>边坡几何要素</h4>
+                <ul>
+                    <li><strong>坡面角：</strong>坡面与水平面的夹角，直接影响稳定分析与落石风险。</li>
+                    <li><strong>台阶（马道）：</strong>为减缓坡度、拦截落石而设置的平台，也是监测布点的重要层级。</li>
+                    <li><strong>最终帮坡角：</strong>露天矿最外侧边坡的整体角度，关系全生命周期稳定储备。</li>
+                    <li><strong>坡顶线与坡底线：</strong>界定边坡范围的关键线，常用于地表位移监测基准与剖面建模。</li>
+                </ul>
+            </div>
+
+            <div class="kb-block">
+                <h4>边坡破坏模式</h4>
+                <ul>
+                    <li><strong>平面滑动：</strong>岩层层面倾向与坡面一致时，沿软弱结构面发生的滑动。</li>
+                    <li><strong>楔形体滑动：</strong>两组结构面切割岩体形成楔形块体，沿交线方向滑落。</li>
+                    <li><strong>圆弧滑动：</strong>多见于土质边坡或散体堆料（如排土场）的条分法分析模型。</li>
+                    <li><strong>倾倒破坏：</strong>反倾层状岩体在重力与裂隙发育条件下发生的弯曲折断。</li>
+                </ul>
+            </div>
+
+            <div class="kb-block">
+                <h4>稳定性评价指标</h4>
+                <p><strong>安全系数：</strong>抗滑力与下滑力的比值，工程上常要求大于 1.2～1.5（具体以规范与设计为准）。</p>
+                <p class="kb-sublist-title">变形阶段</p>
+                <ul>
+                    <li><strong>初始蠕变：</strong>变形速率减缓，趋于稳定。</li>
+                    <li><strong>等速蠕变：</strong>变形速率近似恒定，处于临界状态，应提高监测频次。</li>
+                    <li><strong>加速蠕变：</strong>变形速率剧增，即将破坏，需启动紧急预警与人员撤离预案。</li>
+                </ul>
+            </div>
+        </article>
+
+        <article class="kb-branch" id="kb-landslide">
+            <header>
+                <h3><span class="kb-emoji" aria-hidden="true">📂</span> 子目录三：滑坡原因</h3>
+                <p class="kb-loc"><strong>定位：</strong>深入剖析导致灾害的内因与外因，强调监测的重点对象。</p>
+            </header>
+
+            <div class="kb-block">
+                <h4>内在因素（地质基础）</h4>
+                <ul>
+                    <li><strong>岩性影响：</strong>软岩（泥岩、页岩等）遇水易软化，强度显著降低。</li>
+                    <li><strong>地质构造：</strong>断层、节理、裂隙发育程度决定岩体破碎程度与潜在滑移通道。</li>
+                    <li><strong>水文地质：</strong>地下水静水压力与动水压力削弱有效应力，降低岩土体抗剪强度。</li>
+                </ul>
+            </div>
+
+            <div class="kb-block">
+                <h4>外在诱因（触发机制）</h4>
+                <ul>
+                    <li><strong>爆破振动：</strong>生产爆破产生的地震动易诱发已松动岩体瞬时失稳。</li>
+                    <li><strong>降雨入渗：</strong>雨水沿裂隙入渗，增大自重并抬升孔隙水压力。</li>
+                    <li><strong>降雨 / 风化作用：</strong>长期干湿循环与风化导致岩石力学参数劣化。</li>
+                </ul>
+                <p class="kb-sublist-title">人为工程活动</p>
+                <ul>
+                    <li><strong>坡脚开挖：</strong>削弱坡脚支撑，改变力系平衡。</li>
+                    <li><strong>坡顶堆载：</strong>排土场等顶缘堆载增大下滑力矩。</li>
+                </ul>
+            </div>
+
+            <div class="kb-block">
+                <h4>滑坡前兆识别</h4>
+                <ul>
+                    <li><strong>宏观前兆：</strong>坡顶拉张裂缝、坡脚鼓胀、泉水浑浊或流量突变等。</li>
+                    <li><strong>微观前兆：</strong>深部位移速率突增、声发射信号活跃、渗压与雨量过程线异常等，需在线监测与阈值模型支撑。</li>
+                </ul>
+            </div>
+        </article>
+
+        <article class="kb-branch" id="kb-standards">
+            <header>
+                <h3><span class="kb-emoji" aria-hidden="true">📂</span> 子目录四：安全规范</h3>
+                <p class="kb-loc"><strong>定位：</strong>列举国家标准与行业规范，确立方案的合规性与权威性（具体版本号以现行有效标准文本为准）。</p>
+            </header>
+
+            <div class="kb-block">
+                <h4>核心国家标准</h4>
+                <ul>
+                    <li><strong>《金属非金属矿山安全规程》：</strong>规定边坡角、台阶高度等基本安全红线。</li>
+                    <li><strong>《边坡工程技术规范》：</strong>提供边坡勘察、设计、施工及监测的技术依据。</li>
+                    <li><strong>《工程测量规范》：</strong>保障监测控制网与观测成果的精度满足工程要求。</li>
+                </ul>
+            </div>
+
+            <div class="kb-block">
+                <h4>监测技术规范</h4>
+                <ul>
+                    <li><strong>《工程测量规范》：</strong>明确监测点布设密度、监测频率及报警阈值设定等方法学要求。</li>
+                    <li><strong>《地质灾害监测技术规范》：</strong>指导滑坡等地质灾害的专业化监测实施。</li>
+                </ul>
+            </div>
+
+            <div class="kb-block">
+                <h4>应急管理要求</h4>
+                <ul>
+                    <li><strong>应急预案编制：</strong>企业应制定边坡事故专项应急预案。</li>
+                    <li><strong>避险撤离机制：</strong>明确不同报警等级下的响应流程与撤离路线。</li>
+                    <li><strong>定期安全评估：</strong>按规定开展边坡稳定性分析（如年度评估等，以法规与地方法规为准）。</li>
+                </ul>
+            </div>
+        </article>
+
+        <article class="kb-branch" id="kb-supervision">
+            <header>
+                <h3><span class="kb-emoji" aria-hidden="true">📂</span> 子目录五：监管要求</h3>
+                <p class="kb-loc"><strong>定位：</strong>面向应急、矿山安全监管等部门政策要求，突出数字化与智慧监管趋势（以属地最新文件为准）。</p>
+            </header>
+
+            <div class="kb-block">
+                <h4>双重预防机制建设</h4>
+                <ul>
+                    <li><strong>风险分级管控：</strong>按边坡危险程度划分红、橙、黄、蓝等等级，实施差异化管控。</li>
+                    <li><strong>隐患排查治理：</strong>建立隐患排查台账，实现发现、整改、验收闭环管理。</li>
+                </ul>
+            </div>
+
+            <div class="kb-block">
+                <h4>在线监测系统接入</h4>
+                <ul>
+                    <li><strong>数据联网上传：</strong>大型露天矿山宜建设在线监测系统，并按地方要求接入监管平台。</li>
+                    <li><strong>视频全覆盖：</strong>关键作业面与边坡区域配置视频监控，与位移、雨量等数据联动。</li>
+                </ul>
+            </div>
+
+            <div class="kb-block">
+                <h4>「机械化换人、自动化减人」</h4>
+                <ul>
+                    <li><strong>政策解读：</strong>鼓励以机械化、自动化手段减少高危区域作业人员暴露。</li>
+                    <li><strong>监测替代巡检：</strong>以自动化监测与远程巡检部分替代人工抵近巡查，降低人身风险。</li>
+                </ul>
+            </div>
+
+            <div class="kb-block">
+                <h4>最新政策动态</h4>
+                <ul>
+                    <li><strong>矿山安全生产条例：</strong>跟踪行政法规中关于边坡管理、监测与应急的新增要求。</li>
+                    <li><strong>智慧矿山建设指南：</strong>将边坡监测纳入智慧矿山感知层与决策层整体架构。</li>
+                </ul>
+            </div>
+        </article>
+
+    </div>
+</section>
+
+<footer class="site-footer">
+    <div class="footer-grid">
+        <div class="footer-col footer-kb-teaser">
+            <h4>技术知识库</h4>
+            <p>正文见 <a href="#knowledge" style="color:#60a5fa">本页知识库</a> 或 <a href="knowledge/index.html" style="color:#60a5fa">独立知识页</a>；亦可对接 CMS 或后台以动态维护相关内容。</p>
+        </div>
+        <div id="service">
+            <h4>售后服务</h4>
+            <p>质保与校准、现场技术支持、备件与返修。服务热线：<a href="tel:18201069835" style="color:#60a5fa">18201069835</a></p>
+        </div>
+        <div id="about">
+            <h4>关于我们</h4>
+            <p>露天矿山监测方案 —— 专注露天矿边坡与地质安全监测产品与方案。请替换为公司简介、资质与联系方式。</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 露天矿山监测方案 · 监测设备与解决方案 · 保留所有权利</p>
+        <p style="margin-top:8px;opacity:.7">本页为静态 HTML 演示，无 PHP / CMS。</p>
+    </div>
+</footer>
+
+<script>
+(function () {
+    document.querySelectorAll('.nav-dropdown').forEach(function (root) {
+        var btn = root.querySelector('.nav-dropdown__toggle');
+        if (!btn) return;
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            document.querySelectorAll('.nav-dropdown').forEach(function (r) {
+                if (r !== root) {
+                    r.classList.remove('nav-dropdown--open');
+                    var b = r.querySelector('.nav-dropdown__toggle');
+                    if (b) b.setAttribute('aria-expanded', 'false');
+                }
+            });
+            var open = root.classList.toggle('nav-dropdown--open');
+            btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        root.addEventListener('click', function (e) { e.stopPropagation(); });
+    });
+    document.addEventListener('click', function () {
+        document.querySelectorAll('.nav-dropdown').forEach(function (root) {
+            root.classList.remove('nav-dropdown--open');
+            var b = root.querySelector('.nav-dropdown__toggle');
+            if (b) b.setAttribute('aria-expanded', 'false');
+        });
+    });
+})();
+</script>
+
+</body>
+</html>
