@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>{$meta_title}</title>
+    <meta content="{$meta_keywords}" name="keywords" />
+    <meta content="{$meta_description}" name="description" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --nav-h: 72px;
+            --primary: #0d6efd;
+            --primary-dark: #0a58ca;
+            --text: #1a1a2e;
+            --muted: #5c5c6f;
+            --card-bg: #f4f6f9;
+            --shadow: 0 8px 32px rgba(0,0,0,.08);
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            color: var(--text);
+            font-size: 16px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { color: inherit; text-decoration: none; }
+
+        /* —— 顶栏 —— */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: var(--nav-h);
+            background: #fff;
+            box-shadow: 0 1px 0 rgba(0,0,0,.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 clamp(16px, 4vw, 48px);
+            gap: 1rem;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .brand img {
+            height: 44px;
+            width: auto;
+            display: block;
+        }
+        .brand-fallback {
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--text);
+            letter-spacing: .02em;
+        }
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: clamp(4px, 1.2vw, 20px);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .main-nav a {
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: var(--muted);
+            transition: background .2s, color .2s;
+        }
+        .main-nav a:hover {
+            background: rgba(13,110,253,.08);
+            color: var(--primary);
+        }
+        .header-tools {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-shrink: 0;
+        }
+        .search-form {
+            display: flex;
+            align-items: center;
+            border: 1px solid #dde1e8;
+            border-radius: 999px;
+            overflow: hidden;
+            background: #fafbfc;
+        }
+        .search-form input {
+            border: none;
+            background: transparent;
+            padding: 8px 14px;
+            width: min(200px, 28vw);
+            font-size: 0.9rem;
+            outline: none;
+        }
+        .search-form button {
+            border: none;
+            background: var(--primary);
+            color: #fff;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background .2s;
+        }
+        .search-form button:hover { background: var(--primary-dark); }
+        .hotline {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            line-height: 1.2;
+        }
+        .hotline span:first-child {
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+        .hotline a {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #e63946;
+            letter-spacing: .05em;
+        }
+        .hotline a:hover { text-decoration: underline; }
+
+        @media (max-width: 1100px) {
+            .main-nav { display: none; }
+            .search-form input { width: 120px; }
+        }
+        @media (max-width: 640px) {
+            .header-tools { flex-direction: column; align-items: flex-end; gap: 8px; }
+            .search-form { display: none; }
+        }
+
+        /* —— 巨幕 —— */
+        .hero {
+            position: relative;
+            min-height: calc(100vh - var(--nav-h));
+            min-height: min(92vh, 820px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 48px 24px;
+            background:
+                linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.55)),
+                url("https://images.unsplash.com/photo-1464822759844-d150baec8e12?auto=format&fit=crop&w=2000&q=80") center/cover no-repeat;
+            color: #fff;
+        }
+        .hero-inner { max-width: 900px; }
+        .hero h1 {
+            margin: 0 0 16px;
+            font-size: clamp(1.75rem, 4.5vw, 2.75rem);
+            font-weight: 700;
+            text-shadow: 0 2px 24px rgba(0,0,0,.35);
+            letter-spacing: .02em;
+        }
+        .hero .sub {
+            margin: 0 0 36px;
+            font-size: clamp(1rem, 2.2vw, 1.2rem);
+            opacity: .95;
+            font-weight: 300;
+            letter-spacing: .15em;
+        }
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: transform .15s, box-shadow .15s, background .2s;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(13,110,253,.35);
+        }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-outline {
+            background: rgba(255,255,255,.12);
+            color: #fff;
+            border: 2px solid rgba(255,255,255,.85);
+            backdrop-filter: blur(6px);
+        }
+        .btn-outline:hover {
+            background: rgba(255,255,255,.22);
+        }
+
+        /* —— 解决方案条 —— */
+        .solutions-strip {
+            background: linear-gradient(90deg, #0f172a 0%, #1e3a5f 100%);
+            color: #e2e8f0;
+            text-align: center;
+            padding: 20px 24px;
+            font-size: 0.98rem;
+        }
+        .solutions-strip strong { color: #fff; }
+
+        /* —— 产品网格 —— */
+        #products {
+            padding: 72px clamp(20px, 5vw, 56px) 88px;
+            background: #fff;
+        }
+        .section-title {
+            text-align: center;
+            margin: 0 0 12px;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+        }
+        .section-desc {
+            text-align: center;
+            color: var(--muted);
+            margin: 0 auto 48px;
+            max-width: 640px;
+            font-size: 0.95rem;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 24px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        .product-card {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+            min-height: 220px;
+            transition: transform .25s, box-shadow .25s;
+        }
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 48px rgba(0,0,0,.12);
+        }
+        .product-card > a {
+            display: block;
+            height: 100%;
+            padding: 28px 22px 22px;
+            position: relative;
+            z-index: 1;
+        }
+        .product-card .icon-wrap {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,.06);
+        }
+        .product-card .icon-wrap svg {
+            width: 32px;
+            height: 32px;
+            stroke: var(--primary);
+            fill: none;
+            stroke-width: 2;
+        }
+        .product-card h3 {
+            margin: 0 0 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .product-card .hint {
+            font-size: 0.85rem;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+        .product-card .hover-intro {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 20px 22px;
+            background: linear-gradient(transparent, rgba(13,110,253,.92));
+            color: #fff;
+            font-size: 0.88rem;
+            line-height: 1.55;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity .3s, transform .3s;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .product-card:hover .hover-intro {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* —— 页脚 —— */
+        .site-footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 48px clamp(20px, 5vw, 56px) 24px;
+            font-size: 0.9rem;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            max-width: 1100px;
+            margin: 0 auto 32px;
+        }
+        .site-footer h4 {
+            color: #fff;
+            margin: 0 0 12px;
+            font-size: 1rem;
+        }
+        .site-footer a:hover { color: #fff; }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,.08);
+            font-size: 0.82rem;
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="brand">
+        <a href="{SITE_URL}">
+            <img src="{SITE_LOGO}" alt="{SITE_NAME}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+            <span class="brand-fallback" style="display:none">{SITE_NAME}</span>
+        </a>
+    </div>
+    <nav class="main-nav" aria-label="主导航">
+        <a href="{SITE_URL}">首页</a>
+        <a href="#products">技术产品中心</a>
+        <a href="#solutions">立体式解决方案</a>
+        <a href="#knowledge">技术知识库</a>
+        <a href="#service">售后支持与服务</a>
+        <a href="#about">了解我们</a>
+    </nav>
+    <div class="header-tools">
+        <form class="search-form" action="{SITE_URL}index.php" method="get" role="search">
+            <input type="search" name="keyword" placeholder="搜索设备型号" autocomplete="off" aria-label="搜索设备型号">
+            <button type="submit">搜索</button>
+        </form>
+        <div class="hotline">
+            <span>全国服务热线</span>
+            <a href="tel:18201069835">400-888-0000</a>
+        </div>
+    </div>
+</header>
+
+<section class="hero" id="top">
+    <div class="hero-inner">
+        <h1>露天矿山边坡全方位安全监测技术方案</h1>
+        <p class="sub">全方位 · 全天候 · 智能预警 —— 守护安全</p>
+        <div class="hero-actions">
+            <a class="btn btn-primary" href="#products">查看核心设备</a>
+            <a class="btn btn-outline" href="tel:400-888-0000">联系技术专家</a>
+        </div>
+    </div>
+</section>
+
+<section class="solutions-strip" id="solutions">
+    <strong>边坡监测 · 表面位移 · 深部位移 · 渗压雨量 · 视频联动 · 数据终端一体化方案</strong>
+    —— 覆盖从传感采集、传输组网到平台预警的全链路，可按项目定制集成。
+</section>
+
+<section id="products">
+    <h2 class="section-title">露天矿核心监测设备</h2>
+    <p class="section-desc">以下为典型监测品类。悬停卡片可查看简介；点击将前往对应产品列表（可在安装内容模块后，将链接替换为真实栏目地址）。</p>
+    <div class="product-grid">
+
+        <article class="product-card">
+            <a href="{SITE_URL}index.php?product_cat=surface" data-cat="surface">
+                <div class="icon-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+                </div>
+                <h3>表面位移监测</h3>
+                <p class="hint">GNSS、柔性测斜仪、拉线位移等</p>
+            </a>
+            <div class="hover-intro">针对坡表裂缝与整体滑移，实现毫米级平面及高程位移监测，支持长期趋势分析与预警阈值策略。</div>
+        </article>
+
+        <article class="product-card">
+            <a href="{SITE_URL}index.php?product_cat=deep" data-cat="deep">
+                <div class="icon-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12 2v20M12 2l-4 4M12 2l4 4"/><path d="M8 22h8"/></svg>
+                </div>
+                <h3>深部位移监测</h3>
+                <p class="hint">测斜仪、柔性测斜孔等</p>
+            </a>
+            <div class="hover-intro">沿钻孔深度方向获取分层位移，判断潜在滑动面位置，适用于边坡与基坑深部变形识别。</div>
+        </article>
+
+        <article class="product-card">
+            <a href="{SITE_URL}index.php?product_cat=groundwater" data-cat="groundwater">
+                <div class="icon-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                </div>
+                <h3>地下水/渗压监测</h3>
+                <p class="hint">渗压计、水位计等</p>
+            </a>
+            <div class="hover-intro">量测孔隙水压力与地下水位变化，评估降雨与渗流对边坡稳定的影响，可与雨量数据联动分析。</div>
+        </article>
+
+        <article class="product-card">
+            <a href="{SITE_URL}index.php?product_cat=meteo" data-cat="meteo">
+                <div class="icon-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/><circle cx="12" cy="12" r="4"/></svg>
+                </div>
+                <h3>雨量/气象监测</h3>
+                <p class="hint">雨量站、气象六要素等</p>
+            </a>
+            <div class="hover-intro">实时采集降雨强度、累计雨量及环境参数，为边坡水文响应与预警模型提供输入。</div>
+        </article>
+
+        <article class="product-card">
+            <a href="{SITE_URL}index.php?product_cat=video" data-cat="video">
+                <div class="icon-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M10 10l5 3-5 3z"/></svg>
+                </div>
+                <h3>视频/图像监测</h3>
+                <p class="hint">可见光、红外、智能识别</p>
+            </a>
+            <div class="hover-intro">现场可视巡检与异常图像留存，可与位移、雨量等多源数据融合展示与联动告警。</div>
+        </article>
+
+        <article class="product-card">
+            <a href="{SITE_URL}index.php?product_cat=strain" data-cat="strain">
+                <div class="icon-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="M6 16l6-10 6 10"/><path d="M9.5 11h5"/></svg>
+                </div>
+                <h3>应力/应变监测</h3>
+                <p class="hint">锚索计、钢筋计、土压力等</p>
+            </a>
+            <div class="hover-intro">获取支挡结构与岩土体受力状态，辅助判断加固效果与剩余强度储备。</div>
+        </article>
+
+        <article class="product-card">
+            <a href="{SITE_URL}index.php?product_cat=dtu" data-cat="dtu">
+                <div class="icon-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+                </div>
+                <h3>数据采集与传输终端</h3>
+                <p class="hint">RTU、网关、低功耗组网</p>
+            </a>
+            <div class="hover-intro">统一接入多类型传感器，支持有线/无线传输与边缘计算，保障野外环境长期稳定运行。</div>
+        </article>
+
+    </div>
+</section>
+
+<footer class="site-footer">
+    <div class="footer-grid">
+        <div id="knowledge">
+            <h4>技术知识库</h4>
+            <p>监测原理、选型指南、实施规范等文章可在后台绑定「内容模块」后发布；导航链接可改为具体栏目地址。</p>
+        </div>
+        <div id="service">
+            <h4>售后服务</h4>
+            <p>质保与校准、现场技术支持、备件与返修。服务热线：<a href="tel:400-888-0000" style="color:#60a5fa">400-888-0000</a></p>
+        </div>
+        <div id="about">
+            <h4>关于我们</h4>
+            <p>{SITE_NAME} —— 专注露天矿边坡与地质安全监测产品与方案。请替换为公司简介、资质与联系方式。</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; <?php echo date('Y'); ?> <?php echo SITE_NAME; ?> · 监测设备与解决方案 · 保留所有权利</p>
+        <p style="margin-top:8px;opacity:.7">PHP <?php echo PHP_VERSION; ?> · XunRuiCMS <?php echo CMF_VERSION; ?></p>
+    </div>
+</footer>
+
+</body>
+</html>
